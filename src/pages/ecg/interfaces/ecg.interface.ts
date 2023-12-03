@@ -4,7 +4,6 @@ export interface EcgData {
 };
 
 export interface EcgControl {
-    start: number,
-    limit: number,
-    step: number,
+    count: number,
+    range: number,
 };

@@ -4,7 +4,8 @@
 }
 
 .App-header {
-  height: 64px;
+  /* control height with media or maybe fixed ? */
+  height: 64px; 
   background-color: blue;
 }
 

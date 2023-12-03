@@ -60,7 +60,7 @@ export default function Header() {
                     <div onClick={() => navigateTo('/')}>Home</div>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                    <div onClick={() => navigateTo('/error')}>Error</div>
+                    <div onClick={() => navigateTo('/ecg')}>Ecg</div>
                 </MenuItem>
             </Menu>         
         </AppBar>

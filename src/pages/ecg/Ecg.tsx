@@ -67,7 +67,7 @@ function Ecg() {
 
     // When initialized
     useEffect(() => {
-        fetch('data/14-29-05.txt')
+        fetch('data/sample.txt')
         .then(response => response.body)
         .then((body) => {
             const reader = body?.getReader();

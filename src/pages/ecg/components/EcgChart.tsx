@@ -9,7 +9,9 @@ function EcgChart({data}: {data: EcgData[]}) {
         height="100%"
         chartType="Line"
         dataSource={data}
-        // includedProperties={["value"]}
+        yAxisTitle="uV"
+        yAxisTitleLeftMargin="16"
+        xAxisTitle="Time"
         xAxisEnhancedIntervalPreferMoreCategoryLabels="false"
         shouldConsiderAutoRotationForInitialLabels="false"
         shouldAutoExpandMarginForInitialLabels="false"

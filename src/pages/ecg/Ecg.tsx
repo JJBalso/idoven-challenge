@@ -13,7 +13,7 @@ function Ecg() {
 
     // When initialized
     useEffect(() => {
-        fetch('data/sample.txt') // Replace this line with the url of the file
+        fetch('data/14-29-05.txt') // Replace this line to fetch the proper file
         .then(response => response.body)
         .then((body) => {
             const reader = body?.getReader();

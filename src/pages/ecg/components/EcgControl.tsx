@@ -70,6 +70,7 @@ export default function EcgControl() {
 
         // handle when push this data
         setChartData(groupedData);
+        console.log('created data', groupedData);
         
     }, [controls]);
 
@@ -118,29 +119,22 @@ export default function EcgControl() {
         })
     }
 
-    const EcgDisplay = () => {
-        if(controls.hasStarted) {
-            return <EcgChart data={chartData}></EcgChart>
-        }
-    
-        return <div className="Ecg-display">
-            <Button                
-                variant="contained" 
-                size="large"
-                onClick={start}
-            >
-                Start showng data!
-            </Button>
-        </div>
-    }
-
     return (
         <>
             <Typography variant="h2" component="h2" className="Ecg-title">
                 Electrocardiogram
             </Typography>
             <div className="Ecg-chart">
-                <EcgDisplay/> 
+                <EcgChart data={chartData}></EcgChart>
+                {!controls.hasStarted && <div className="Ecg-display">
+                    <Button                
+                        variant="contained" 
+                        size="large"
+                        onClick={start}
+                    >
+                        Start showng data!
+                    </Button>
+                </div>}
             </div>
             <div className="Ecg-controls">
                 <IconButton

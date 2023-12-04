@@ -1,22 +1,15 @@
-import { SelectChangeEvent, Typography, IconButton, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useContext, useRef, useState, useEffect } from "react";
+import { SelectChangeEvent, Typography, IconButton, FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { EcgContext } from "../ecg-context";
 import { EcgData, EcgControls } from "../interfaces/ecg.interface";
 import EcgChart from "./EcgChart";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
-function EcgConditional({showChart, lines}: {showChart: boolean, lines: EcgData[]}) {
-    if (showChart) {
-        return <EcgChart data={lines}></EcgChart>
-    }
-
-    return <div>loading...</div>
-}
+import './EcgControl.css';
 
 export default function EcgControl() {
     // All data from context
-    const chartData = useContext(EcgContext);
+    const ecgData = useContext(EcgContext);
 
     // Data Ref to store data without trigger render
     const dataRef = useRef<EcgData[][]>([]);
@@ -24,64 +17,64 @@ export default function EcgControl() {
     // State of the control
     const [controls, setControls] = useState<EcgControls>({count: 0, range: 1000, hasStarted: false});
 
-    const [lines, setLines] = useState<EcgData[]>([]);
+    // Data to be represented
+    const [chartData, setChartData] = useState<EcgData[]>([]);
 
     // Store data but not trigger render
     useEffect(() => {
-        dataRef.current = chartData;
-    }, [chartData])
+        dataRef.current = ecgData;
+    }, [ecgData])
 
     // Calculate data to be displayed
     useEffect(() => {
         const data = dataRef.current;
-        let chartData: EcgData[] = [];
+        let groupedData: EcgData[] = [];
 
         const initialItem = controls.count*controls.range;
         let skipCount = 0;
-
-        let startIndex = 0;
+        let startChunkIndex = 0;
 
         // Count items
         data.some((d, i) => {
             if (d.length > initialItem - skipCount) {
-                startIndex = i;
+                startChunkIndex = i;
                 return true
             } else {
                 skipCount += d.length;
             }
         });
 
-        for (let i = startIndex; i < data.length; i++) {
-            if (i === startIndex) {
-                const dif = data[i].length - (initialItem - skipCount)
+        for (let i = startChunkIndex; i < data.length; i++) {
+            if (i === startChunkIndex) {
+                const dataLenghtDif = data[i].length - (initialItem - skipCount)
 
-                if (dif > controls.range) {
-                    chartData = data[i].slice(initialItem - skipCount, initialItem - skipCount + controls.range);
+                if (dataLenghtDif > controls.range) {
+                    groupedData = data[i].slice(initialItem - skipCount, initialItem - skipCount + controls.range);
                     break;
                 } else {
-                    chartData = data[i].slice(initialItem - skipCount, data[i].length);
+                    groupedData = data[i].slice(initialItem - skipCount, data[i].length);
                 }
 
             } else {
-                const dif = controls.range - chartData.length;
+                const dataRangeDif = controls.range - groupedData.length;
 
-                if (data[i].length < dif){
-                    chartData = [...chartData, ...data[i]];
+                if (dataRangeDif > data[i].length){
+                    groupedData = [...groupedData, ...data[i]];
                 } else {
-                    const remaining = data[i].slice(0, dif);
-                    chartData = [...chartData, ...remaining];
+                    const remaining = data[i].slice(0, dataRangeDif);
+                    groupedData = [...groupedData, ...remaining];
                     break;
                 }
             }
         }
 
         // handle when push this data
-        setLines(chartData);
+        setChartData(groupedData);
         
     }, [controls]);
 
-    const back = () => {
-        // go a step back
+    // go a step back
+    const back = () => {        
         const count = controls.count - 1;
 
         if (count >= 0) {
@@ -92,8 +85,8 @@ export default function EcgControl() {
         }
     }
 
-    const next = () => {
-        // go a step forward
+    // go a step forward
+    const next = () => {        
         const total = dataRef.current.reduce((total, d) => total + d.length, 0);
         const count = controls.count + 1;
 
@@ -105,6 +98,17 @@ export default function EcgControl() {
         }
     }
 
+    // start showing data
+    const start = () => {
+        if (!controls.hasStarted ) {
+            setControls({
+                ...controls,
+                hasStarted: true,
+            })
+        }
+    }
+
+    // change range
     const handleRange = (event: SelectChangeEvent) => {
         const range = Number(event.target.value);
 
@@ -114,12 +118,20 @@ export default function EcgControl() {
         })
     }
 
-    const A = () => {
+    const EcgDisplay = () => {
         if(controls.hasStarted) {
-            return <EcgChart data={lines}></EcgChart>
+            return <EcgChart data={chartData}></EcgChart>
         }
     
-        return <div>loading...</div>
+        return <div className="Ecg-display">
+            <Button                
+                variant="contained" 
+                size="large"
+                onClick={start}
+            >
+                Start showng data!
+            </Button>
+        </div>
     }
 
     return (
@@ -128,10 +140,15 @@ export default function EcgControl() {
                 Electrocardiogram
             </Typography>
             <div className="Ecg-chart">
-                <A/>                
+                <EcgDisplay/> 
             </div>
             <div className="Ecg-controls">
-                <IconButton aria-label="delete" size="large" onClick={back}>
+                <IconButton
+                    aria-label="back"
+                    size="large"
+                    disabled={!controls.hasStarted}
+                    onClick={back}
+                >
                     <ArrowBackIcon />
                 </IconButton>
                 <FormControl fullWidth>
@@ -141,14 +158,21 @@ export default function EcgControl() {
                         id="demo-simple-select"
                         value={controls.range.toString()}
                         label="Age"
+                        disabled={!controls.hasStarted}
                         onChange={handleRange}
                     >
-                    <MenuItem value={1000}>1000</MenuItem>
-                    <MenuItem value={5000}>5000</MenuItem>
-                    <MenuItem value={10000}>10000</MenuItem>
+                    {/* TODO: store it in variable */}
+                    <MenuItem value={1000}>1000 datapoints</MenuItem>
+                    <MenuItem value={5000}>5000 datapoints</MenuItem>
+                    <MenuItem value={10000}>10000 datapoints</MenuItem>
                     </Select>
                 </FormControl>
-                <IconButton aria-label="delete" size="large" onClick={next}>
+                <IconButton 
+                    aria-label="next"
+                    size="large"
+                    disabled={!controls.hasStarted}
+                    onClick={next}
+                >
                     <ArrowForwardIcon />
                 </IconButton>
             </div>

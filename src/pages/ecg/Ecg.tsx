@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import Alert from '@mui/material/Alert';
 import { EcgData } from './interfaces/ecg.interface';
 import { EcgContext } from './ecg-context';
-import './Ecg.css';
 import EcgControl from './components/EcgControl';
+import './Ecg.css';
 
 function Ecg() {
     const [chartData, setChartData] = useState<EcgData[][]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const startDate = new Date();
 
@@ -23,7 +25,8 @@ function Ecg() {
                     // Get loading time
                     const loadingTime = new Date().getTime() - startDate.getTime() 
 
-                    console.log(loadingTime);
+                    console.log('Loaded in', `${loadingTime} ms`);
+                    setIsLoading(false);
 
                     return;
                 }
@@ -69,6 +72,11 @@ function Ecg() {
     return (
         <EcgContext.Provider value={chartData}>
             <EcgControl></EcgControl>
+            {isLoading && 
+                <Alert className="Ecg-alert" severity="warning">
+                    Loading data. You may find performance issues, be patient.
+                </Alert>
+            }
         </EcgContext.Provider>
     );
   }

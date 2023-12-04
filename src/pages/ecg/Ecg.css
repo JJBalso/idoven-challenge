@@ -1,14 +1,5 @@
-.Ecg-title {
-    padding: 24px 0;
-    text-align: center;
-}
-
-.Ecg-chart {
-    height: 500px;
-}
-
-.Ecg-controls {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 16px;
+.Ecg-alert {
+    position: absolute;
+    right: 24px;
+    top: 160px;
 }

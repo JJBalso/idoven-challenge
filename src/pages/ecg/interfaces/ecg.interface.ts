@@ -3,7 +3,8 @@ export interface EcgData {
     value: number,
 };
 
-export interface EcgControl {
+export interface EcgControls {
     count: number,
     range: number,
+    hasStarted: boolean,
 };

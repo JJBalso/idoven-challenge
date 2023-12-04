@@ -1,0 +1,25 @@
+.Ecg-title {
+    padding: 24px 0;
+    text-align: center;
+}
+
+.Ecg-chart {
+    height: 500px;
+    position: relative;
+}
+
+.Ecg-controls {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 16px;
+}
+
+.Ecg-display {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

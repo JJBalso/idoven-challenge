@@ -70,7 +70,6 @@ export default function EcgControl() {
 
         // handle when push this data
         setChartData(groupedData);
-        console.log('created data', groupedData);
         
     }, [controls]);
 

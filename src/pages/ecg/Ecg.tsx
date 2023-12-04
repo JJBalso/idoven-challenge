@@ -11,7 +11,7 @@ function Ecg() {
 
     const startDate = new Date();
 
-    // When initialized
+    // TODO: cancel fetch with signal when destroyed
     useEffect(() => {
         fetch('data/14-29-05.txt') // Replace this line to fetch the proper file
         .then(response => response.body)

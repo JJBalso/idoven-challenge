@@ -11,7 +11,7 @@ import './Header.css';
 import { useState } from 'react';
 
 export default function Header() {
-    const title = 'Well, hello there';
+    const title = 'Idoven.ai Coding Challenge';
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,12 +21,12 @@ export default function Header() {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = (route?: string) => {
         setAnchorEl(null);
-    };
 
-    const navigateTo = (input: string) => {
-        navigate(input);
+        if (route) {
+            navigate(route);
+        }
     };
     
     return (
@@ -44,22 +44,22 @@ export default function Header() {
                 </IconButton>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     {title}
-                </Typography>            
+                </Typography>
             </Toolbar>
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={isMenuOpen}
-                onClose={handleClose}
+                onClose={() => handleClose()}
                 MenuListProps={{
-                'aria-labelledby': 'basic-button',
+                    'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>
-                    <div onClick={() => navigateTo('/')}>Home</div>
+                <MenuItem onClick={() => handleClose('/')}>
+                    Home
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <div onClick={() => navigateTo('/ecg')}>Ecg</div>
+                <MenuItem onClick={() => handleClose('/ecg')}>
+                    Ecg
                 </MenuItem>
             </Menu>         
         </AppBar>

@@ -12,16 +12,12 @@ import Ecg from './pages/ecg/Ecg';
 function App() {
   return (
     <Router>
-      <header className='App-header'>
-        <Header />
-      </header>
-      <section className='App-body'>
-        <Routes>
-          <Route path="/" element={<Home />} errorElement={<Error />}/>
-          <Route path="/ecg" element={<Ecg />} errorElement={<Error />}/>
-          <Route path="/error" element={<Error />} />
-        </Routes>      
-      </section>
+      <Header />      
+      <Routes>
+        <Route path="/" element={<Home />} errorElement={<Error />}/>
+        <Route path="/ecg" element={<Ecg />} errorElement={<Error />}/>
+        <Route path="/error" element={<Error />} />
+      </Routes>      
     </Router>
   );
 }

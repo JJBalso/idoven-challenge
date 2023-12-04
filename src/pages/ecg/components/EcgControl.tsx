@@ -38,9 +38,10 @@ export default function EcgControl() {
         data.some((d, i) => {
             if (d.length > initialItem - skipCount) {
                 startChunkIndex = i;
-                return true
+                return true;
             } else {
                 skipCount += d.length;
+                return false;
             }
         });
 

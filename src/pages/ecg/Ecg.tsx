@@ -9,15 +9,13 @@ function Ecg() {
     const [chartData, setChartData] = useState<EcgData[][]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const startDate = new Date();
-
     // TODO: cancel fetch with signal when destroyed
     useEffect(() => {
-        fetch('data/14-29-05.txt') // Replace this line to fetch the proper file
+        fetch('data/sample.txt') // Replace this line to fetch the proper file if needed
         .then(response => response.body)
         .then((body) => {
             const reader = body?.getReader();
-
+            const startDate = new Date();
             let previousTime = 0;
 
             reader?.read().then(function pump({ done, value }): any {

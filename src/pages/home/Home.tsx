@@ -10,7 +10,7 @@ function Home() {
                 You can access the challenge itself by clicking in the top-left menu and selecting "ecg".
             </Typography>
             <Typography variant="body1" component="div" paragraph>
-                By default, the challenge loads a sample file located in the data folder (data/sample.txt). This is only meant for a quick preview.
+                By default, the challenge loads a sample file located in the data folder (/public/data/sample.txt). This is only meant for a quick preview.
                 If you want to display a large data file, like the one provided in the challenge instructions, please overwrite the current <i>sample.txt</i> file.
             </Typography>            
             <Typography variant="body1" component="div" paragraph>
